@@ -1,4 +1,7 @@
 import React from 'react';
+
+import HeaderButton from '../HeaderButton/HeaderButton';
+
 import '../Header/Header.css';
 
 const Header = () => {
@@ -7,9 +10,7 @@ const Header = () => {
       <div className="title">
         <h1>Приложение заметки</h1>
       </div>
-      <div className="new_notice">
-        <button type="button" className="btn btn-primary">Новая заметка</button>
-      </div>
+      <HeaderButton />
     </div>
   )
 };
