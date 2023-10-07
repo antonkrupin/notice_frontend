@@ -1,9 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import '../Notice/Notice.css';
 
 const Notice = (props) => {
+  const navigate = useNavigate();
   const { id, body, creation_date } = props;
-  console.log(id);
+  
+  const editNotice = () => {
+    navigate(`/editNotice/${id}`);
+  };
+
+  const deleteNotice = () => {
+    console.log(`Delete notice? ${id}`);
+  }
+
   return (
     <div className="notice d-flex justify-content-between" id={id}>
       <div className="notice_creation_date">
@@ -15,8 +26,8 @@ const Notice = (props) => {
         </h3>
       </div>
       <div className="notice_buttons">
-        <button className="btn btn-success">Редактировать</button>
-        <button className="btn btn-danger">Удалить</button>
+        <button className="btn btn-success" onClick={editNotice}>Редактировать</button>
+        <button className="btn btn-danger" onClick={deleteNotice}>Удалить</button>
       </div>
     </div>
   )
