@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Notice from '../Notice/Notice';
 
 import '../NoticeList/NoticeList.css';
