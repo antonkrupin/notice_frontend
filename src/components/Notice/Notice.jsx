@@ -6,13 +6,22 @@ import '../Notice/Notice.css';
 const Notice = (props) => {
   const navigate = useNavigate();
   const { id, body, creation_date } = props;
-  
+
   const editNotice = () => {
     navigate(`/editNotice/${id}`);
   };
 
-  const deleteNotice = () => {
-    console.log(`Delete notice? ${id}`);
+  const deleteNotice = async () => {
+    console.log('test');
+    try {
+      await fetch(`http://localhost:5000/api/notice/${id}`, {
+        method: 'DELETE',
+        headers: {},
+        body: null
+      })
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
