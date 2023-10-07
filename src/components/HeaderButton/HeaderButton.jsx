@@ -7,7 +7,7 @@ const HeaderButton = () => {
   const navigate = useNavigate();
   
   const createNewNotice = () => {
-    navigate('/newNotice');
+    navigate('/addNotice');
   }
 
   const backToNoticeList = () => {
@@ -15,7 +15,7 @@ const HeaderButton = () => {
   }
 
   switch(location.pathname.split('/')[1]) {
-    case 'newNotice': {
+    case 'addNotice': {
       return (
         <div className="new_notice">
           <button type="button" className="btn btn-primary" onClick={backToNoticeList}>Назад</button>
@@ -29,7 +29,7 @@ const HeaderButton = () => {
         </div>
       )
     }
-    case '': {
+    default: {
       return (
         <div className="new_notice">
           <button type="button" className="btn btn-primary" onClick={createNewNotice}>Новая заметка</button>
