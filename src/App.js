@@ -21,7 +21,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<NoticeList />}/>
-          <Route path="/newNotice" element={<NewNotice />} />
+          <Route path="/addNotice" element={<NewNotice />} />
           <Route path="/editNotice/:id" element={<EditNotice />} />
         </Routes>
       </div>
