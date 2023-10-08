@@ -27,10 +27,15 @@ const NewNotice = () => {
   };
 
   return (
-    <div className="d-flex flex-column">
-      <h1>Новая заметка</h1>
-      <form onSubmit={addNewNotice} ref={formRef}>
+    <div className="d-flex flex-column justify-content-start">
+      <h3>Новая заметка</h3>
+      <form
+        className="d-flex flex-column align-items-start"
+        onSubmit={addNewNotice}
+        ref={formRef}
+      >
         <textarea
+          className="mb-3"
           name="noticeBody"
           placeholder="Текст заметки"
           rows="4"
