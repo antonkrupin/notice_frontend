@@ -22,16 +22,16 @@ const NoticeList = () => {
     <div className="notice_list">
       <h3>Список заметок:</h3>
       {notices.map((notice) => (
-        <Notice key={notice._id} id={notice._id} body={notice.body} creation_date={notice.creationDate}/>
+        <Notice
+          key={notice._id}
+          id={notice._id}
+          body={notice.body}
+          creation_date={notice.creationDate}
+          editDate={notice.editDate}
+        />
       ))}
     </div>
   )
 };
 
 export default NoticeList
-
-/*
-{notices.map((notice) => (
-        <Notice key={notice.id} id={notice.id} body={notice.body} creation_date={notice.creation_date}/>
-      ))}
-*/
