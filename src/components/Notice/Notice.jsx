@@ -5,14 +5,13 @@ import '../Notice/Notice.css';
 
 const Notice = (props) => {
   const navigate = useNavigate();
-  const { id, body, creation_date } = props;
+  const { id, body, creation_date, editDate } = props;
 
   const editNotice = () => {
     navigate(`/editNotice/${id}`);
   };
 
   const deleteNotice = async () => {
-    console.log('test');
     try {
       await fetch(`http://localhost:5000/api/notice/${id}`, {
         method: 'DELETE',
@@ -27,7 +26,8 @@ const Notice = (props) => {
   return (
     <div className="notice d-flex justify-content-between" id={id}>
       <div className="notice_creation_date">
-        <h4>Дата создания: {creation_date}</h4>
+        <h5 className="text-primary">Дата создания: {creation_date}</h5>
+        {editDate && (<h5 className="text-success">Редактировано: {editDate}</h5>)}
       </div>
       <div className="notice_body">
         <h3>
