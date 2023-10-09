@@ -1,39 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import Notice from '../Notice/Notice';
-
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import i18n from '../../asserts/i18';
+
+import { loadNotices, setStatus } from '../../slices/mainReducer';
+import { fetchNotices,fetchStatus } from '../../slices/selectors';
+import Notice from '../Notice/Notice';
+import Spinner from '../Spinner/Spinner';
+
 import '../NoticeList/NoticeList.css';
 
+
 const NoticeList = () => {
-  const [notices, setNotices] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const dispatch = useDispatch();
+	const notices = useSelector(fetchNotices);
+	const status = useSelector(fetchStatus);
 
   useEffect(() => {
     const sendRequest = async () => {
       try {
-				setIsLoading(true);
+				dispatch(setStatus('loadingNotices'));
         const response = await fetch('http://localhost:5000/api/');
         const responseData = await response.json();
-        setNotices(responseData.reverse());
+				dispatch(loadNotices(responseData.reverse()));
+				dispatch(setStatus(''));
       } catch (err) {
         console.log(err);
       }
-			setIsLoading(false);
     }
     sendRequest();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="notice_list">
       <h3>{i18n.t('ui.titles.noticeList')}</h3>
-			{isLoading && (
-				<div className="d-flex justify-content-center align-items-center">
-					<div class="spinner-border text-primary" role="status">
-					</div>
-					<h5 className="ml-5">{i18n.t('spinner.noticeListLoading')}</h5>
-				</div>
-			)}
-      { !isLoading && notices.map((notice) => (
+			<Spinner />
+      {!status && notices.map((notice) => (
         <Notice
           key={notice._id}
           id={notice._id}
@@ -46,4 +47,4 @@ const NoticeList = () => {
   )
 };
 
-export default NoticeList
+export default NoticeList;

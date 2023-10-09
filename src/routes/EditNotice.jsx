@@ -1,24 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import i18n from '../asserts/i18';
+import { setStatus } from '../slices/mainReducer';
+import { fetchStatus } from '../slices/selectors';
+
+import Spinner from '../components/Spinner/Spinner';
 
 const EditNotice = () => {
   const id = useParams().id;
   const formRef = useRef();
   const textareaRef = useRef();
   const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const status = useSelector(fetchStatus);
   const [notice, setNotice] = useState({});
-	const [isLoading, setIsLoading] = useState(false);
+
 
   useEffect(() => {
     const sendRequest = async () => {
       try {
-				setIsLoading(true);
+				dispatch(setStatus('loadEditingNotice'));
         const response = await fetch(`http://localhost:5000/api/editNotice/${id}`);
         const responseData = await response.json();
         setNotice(responseData);
-				setIsLoading(false);
+				dispatch(setStatus(''));
       } catch (err) {
         console.log(err);
       }
@@ -27,7 +34,7 @@ const EditNotice = () => {
 		if (textareaRef.current) {
 			textareaRef.current.focus();
 		}
-  }, [id]);
+  }, [id, dispatch]);
 
   const updateNotice = async (e) => {
     e.preventDefault();
@@ -36,7 +43,7 @@ const EditNotice = () => {
 
     updatedNotice.body = formData.get('noticeBody');
     if (updatedNotice.body) {
-			setIsLoading(true);
+			dispatch(setStatus('saveEditNotice'))
       await fetch(
         `http://localhost:5000/api/editNotice/${id}`,
         {
@@ -46,27 +53,26 @@ const EditNotice = () => {
           },
           body: JSON.stringify(updatedNotice)
         });
-			setIsLoading(false);
+			dispatch(setStatus(''));
 			navigate('/');
     }
   }
 
   return (
 		<>
-			{isLoading && (
-				<div className="d-flex justify-content-center align-items-center">
-					<div class="spinner-border text-primary" role="status">
-					</div>
-					<h5 className="ml-5">{i18n.t('spinner.editNoticeLoading')}</h5>
-				</div>
-			)}
-			{!isLoading && (
+			<Spinner />
+			{!status && (
 				<div className="d-flex justify-content-center" id={id}>
 					<div className="notice_creation_date">
-						<h5>{i18n.t('notice.creationDate')} {notice.creationDate}</h5>
+						<h5>
+							{i18n.t('notice.creationDate')} {notice.creationDate}
+						</h5>
 					</div>
 					<div className="notice_body">
-						<form onSubmit={updateNotice} ref={formRef}>
+						<form
+							onSubmit={updateNotice}
+							ref={formRef}
+						>
 							<textarea
 								name="noticeBody"
 								defaultValue={notice.body}
@@ -92,12 +98,3 @@ const EditNotice = () => {
 };
 
 export default EditNotice;
-
-/*
-<button
-              className="btn btn-danger"
-              onClick={deleteNotice}
-            >
-              Удалить
-            </button>
-*/
