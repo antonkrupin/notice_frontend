@@ -27,6 +27,9 @@ export default {
 			saveEditNotice: 'Сохранение изменений',
 			addNotice: 'Добавление заметки',
 			deleteNotice: 'Удаление заметки',
+		},
+		errors: {
+			emptyNotice: 'Заметка не может быть пустой.',
 		}
   },
 };

@@ -24,6 +24,9 @@ const slice = createSlice({
 		setStatus: (state, action) => {
 			state.status = action.payload;
 		},
+		setError: (state, action) => {
+			state.error = action.payload;
+		}
 	}
 });
 
@@ -31,6 +34,7 @@ export const {
 	loadNotices,
 	deleteNotice,
 	setStatus,
+	setError,
 } = slice.actions;
 
 export default slice.reducer;

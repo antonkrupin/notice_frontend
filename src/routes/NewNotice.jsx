@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import i18n from '../asserts/i18';
-import { setStatus } from '../slices/mainReducer';
-import { fetchStatus } from '../slices/selectors';
+import { setStatus, setError } from '../slices/mainReducer';
+import { fetchStatus, fetchError } from '../slices/selectors';
 
 import Spinner from '../components/Spinner/Spinner';
 
@@ -15,7 +15,7 @@ const NewNotice = () => {
   const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const status = useSelector(fetchStatus);
-	
+	const error = useSelector(fetchError);
 
   useEffect(() => {
     textareaRef.current.focus();
@@ -36,8 +36,11 @@ const NewNotice = () => {
         body: JSON.stringify(newNotice)
       });
 			dispatch(setStatus(''));
+			dispatch(setError(''));
       navigate('/');
-    }
+    } else {
+			dispatch(setError('emptyNotice'));
+		}
   };
 
   return (
@@ -69,6 +72,11 @@ const NewNotice = () => {
 						{i18n.t('buttons.addBtn')}
 					</button>
 				</form>
+				{error && (
+					<div>
+						<h6 className="text-danger">{i18n.t('errors.emptyNotice')}</h6>
+					</div>
+				)}
 			</div>
 		)}
 		</>
