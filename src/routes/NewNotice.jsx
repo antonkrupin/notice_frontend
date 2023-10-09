@@ -10,10 +10,12 @@ import Spinner from '../components/Spinner/Spinner';
 
 
 const NewNotice = () => {
-  const textareaRef = useRef();
-  const formRef = useRef();
   const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+  const textareaRef = useRef();
+  const formRef = useRef();
+
 	const status = useSelector(fetchStatus);
 	const error = useSelector(fetchError);
 
@@ -21,7 +23,7 @@ const NewNotice = () => {
     textareaRef.current.focus();
   }, []);
 
-  const addNewNotice = async (e) => {
+  const addNewNoticeHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData(formRef.current);
     const newNotice = {};
@@ -30,11 +32,13 @@ const NewNotice = () => {
 
     if (newNotice.body) {
 			dispatch(setStatus('addNotice'));
+
       await fetch('http://localhost:5000/api/addNotice', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(newNotice)
       });
+
 			dispatch(setStatus(''));
 			dispatch(setError(''));
       navigate('/');
@@ -42,6 +46,10 @@ const NewNotice = () => {
 			dispatch(setError('emptyNotice'));
 		}
   };
+
+  const resetErrorOnFocus = () => {
+		dispatch(setError(''));
+	}
 
   return (
 		<>
@@ -53,10 +61,11 @@ const NewNotice = () => {
 				</h3>
 				<form
 					className="d-flex flex-column align-items-start"
-					onSubmit={addNewNotice}
+					onSubmit={addNewNoticeHandler}
 					ref={formRef}
 				>
 					<textarea
+            onFocus={resetErrorOnFocus}
 						className="mb-3"
 						name="noticeBody"
 						placeholder="Текст заметки"
@@ -74,7 +83,9 @@ const NewNotice = () => {
 				</form>
 				{error && (
 					<div>
-						<h6 className="text-danger">{i18n.t('errors.emptyNotice')}</h6>
+						<h6 className="text-danger">
+							{i18n.t('errors.emptyNotice')}
+						</h6>
 					</div>
 				)}
 			</div>

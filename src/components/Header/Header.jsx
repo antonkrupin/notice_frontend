@@ -9,7 +9,9 @@ const Header = () => {
   return (
     <div className="header d-flex justify-content-start align-items-center">
       <div className="title">
-        <h1>{i18n.t('ui.appName')}</h1>
+        <h1>
+          {i18n.t('ui.appName')}
+        </h1>
       </div>
       <HeaderButton />
     </div>

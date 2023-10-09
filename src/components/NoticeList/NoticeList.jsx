@@ -20,8 +20,10 @@ const NoticeList = () => {
     const sendRequest = async () => {
       try {
 				dispatch(setStatus('loadingNotices'));
+
         const response = await fetch('http://localhost:5000/api/');
         const responseData = await response.json();
+
 				dispatch(loadNotices(responseData.reverse()));
 				dispatch(setStatus(''));
       } catch (err) {

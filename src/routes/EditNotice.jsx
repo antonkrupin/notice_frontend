@@ -3,18 +3,21 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import i18n from '../asserts/i18';
-import { setStatus } from '../slices/mainReducer';
-import { fetchStatus } from '../slices/selectors';
+import { setStatus, setError } from '../slices/mainReducer';
+import { fetchStatus, fetchError } from '../slices/selectors';
 
 import Spinner from '../components/Spinner/Spinner';
 
 const EditNotice = () => {
-  const id = useParams().id;
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
   const formRef = useRef();
   const textareaRef = useRef();
-  const navigate = useNavigate();
-	const dispatch = useDispatch();
+
+	const id = useParams().id;
 	const status = useSelector(fetchStatus);
+	const error = useSelector(fetchError);
   const [notice, setNotice] = useState({});
 
 
@@ -22,8 +25,10 @@ const EditNotice = () => {
     const sendRequest = async () => {
       try {
 				dispatch(setStatus('loadEditingNotice'));
+
         const response = await fetch(`http://localhost:5000/api/editNotice/${id}`);
         const responseData = await response.json();
+
         setNotice(responseData);
 				dispatch(setStatus(''));
       } catch (err) {
@@ -36,14 +41,15 @@ const EditNotice = () => {
 		}
   }, [id, dispatch]);
 
-  const updateNotice = async (e) => {
+  const updateNoticeHandler = async (e) => {
     e.preventDefault();
     const updatedNotice = {};
     const formData = new FormData(formRef.current);
 
     updatedNotice.body = formData.get('noticeBody');
     if (updatedNotice.body) {
-			dispatch(setStatus('saveEditNotice'))
+			dispatch(setStatus('saveEditNotice'));
+
       await fetch(
         `http://localhost:5000/api/editNotice/${id}`,
         {
@@ -53,10 +59,17 @@ const EditNotice = () => {
           },
           body: JSON.stringify(updatedNotice)
         });
+			dispatch(setError(''));
 			dispatch(setStatus(''));
 			navigate('/');
-    }
+    } else {
+			dispatch(setError('emptyNotice'));
+		}
   }
+
+	const resetErrorOnFocus = () => {
+		dispatch(setError(''));
+	}
 
   return (
 		<>
@@ -70,10 +83,11 @@ const EditNotice = () => {
 					</div>
 					<div className="notice_body">
 						<form
-							onSubmit={updateNotice}
+							onSubmit={updateNoticeHandler}
 							ref={formRef}
 						>
 							<textarea
+								onFocus={resetErrorOnFocus}
 								name="noticeBody"
 								defaultValue={notice.body}
 								ref={textareaRef}
@@ -90,6 +104,13 @@ const EditNotice = () => {
 								</button>
 							</div>
 						</form>
+						{error && (
+							<div>
+								<h6 className="text-danger">
+									{i18n.t('errors.emptyNotice')}
+								</h6>
+							</div>
+						)}
 					</div>
 				</div>
 			)}

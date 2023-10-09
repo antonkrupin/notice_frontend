@@ -11,6 +11,7 @@ import '../Notice/Notice.css';
 const Notice = (props) => {
   const navigate = useNavigate();
 	const dispatch = useDispatch();
+
 	const status = useSelector(fetchStatus);
   const { id, body, creation_date, editDate } = props;
 
@@ -21,11 +22,13 @@ const Notice = (props) => {
   const deleteNoticeHandler = async () => {
     try {
 			dispatch(setStatus('deleteNotice'));
+
       await fetch(`http://localhost:5000/api/notice/${id}`, {
         method: 'DELETE',
         headers: {},
         body: null
       });
+
 			dispatch(setStatus(''));
     } catch (err) {
       console.log(err);
