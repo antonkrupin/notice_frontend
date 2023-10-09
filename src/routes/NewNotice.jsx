@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import i18n from '../asserts/i18';
-
 import { setStatus } from '../slices/mainReducer';
 import { fetchStatus } from '../slices/selectors';
 

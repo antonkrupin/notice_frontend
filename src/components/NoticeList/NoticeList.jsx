@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import i18n from '../../asserts/i18';
 
+import i18n from '../../asserts/i18';
 import { loadNotices, setStatus } from '../../slices/mainReducer';
 import { fetchNotices,fetchStatus } from '../../slices/selectors';
+
 import Notice from '../Notice/Notice';
 import Spinner from '../Spinner/Spinner';
 
@@ -32,7 +33,11 @@ const NoticeList = () => {
 
   return (
     <div className="notice_list">
-      <h3>{i18n.t('ui.titles.noticeList')}</h3>
+			{!status && (
+				<h3>
+					{i18n.t('ui.titles.noticeList')}
+				</h3>
+			)}
 			<Spinner />
       {!status && notices.map((notice) => (
         <Notice
@@ -43,6 +48,13 @@ const NoticeList = () => {
           editDate={notice.editDate}
         />
       ))}
+			{(!status && notices.length === 0) && (
+				<div className="d-flex justify-content-center">
+					<h4 className="text-danger">
+						{i18n.t('ui.titles.emptyNoticeList')}
+					</h4>
+				</div>
+			)}
     </div>
   )
 };
