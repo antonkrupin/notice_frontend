@@ -24,6 +24,8 @@ export default {
 			editNoticeLoading: 'Загрузка заметки для редактирования',
 			noticeListLoading: 'Загрузка списка заметок',
 			saveEditNotice: 'Сохранение изменений',
+			addNotice: 'Добавление заметки',
+			deleteNotice: 'Удаление заметки',
 		}
   },
 };
