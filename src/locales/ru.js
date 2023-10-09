@@ -6,6 +6,7 @@ export default {
       titles: {
 				noticeList: 'Список заметок:',
 				newNotice: 'Новая заметка',
+				emptyNoticeList: 'Заметок нет. Добавьте новую замету.',
 			}
     },
 		buttons: {
