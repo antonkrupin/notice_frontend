@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import i18n from '../asserts/i18';
 //import { EditorState } from "draft-js";
 //import { Editor } from "react-draft-wysiwyg";
 //import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -42,7 +43,7 @@ const NewNotice = () => {
 
   return (
     <div className="d-flex flex-column justify-content-start">
-      <h3>Новая заметка</h3>
+      <h3>{i18n.t('ui.titles.newNotice')}</h3>
       <form
         className="d-flex flex-column align-items-start"
         onSubmit={addNewNotice}
@@ -58,7 +59,7 @@ const NewNotice = () => {
         >
 
         </textarea>
-        <button type="submit" className="btn btn-primary">Добавить</button>
+        <button type="submit" className="btn btn-primary">{i18n.t('buttons.addBtn')}</button>
       </form>
     </div>
   )
